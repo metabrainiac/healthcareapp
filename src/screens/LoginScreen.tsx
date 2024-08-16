@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {View, Text, TextInput, Button, Alert} from 'react-native';
 import {NativeModules} from 'react-native';
+import validator from 'validator';
 import styles from './LoginScreenStyles';
 
 const {HawcxModule} = NativeModules;
@@ -13,6 +14,11 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
   const [email, setEmail] = useState<string>('');
 
   const handleLogin = () => {
+    if (validator.isEmail(email) === false) {
+      Alert.alert('Invalid email address');
+      return;
+    }
+
     HawcxModule.login(email)
       .then(() => {
         console.log('success');
